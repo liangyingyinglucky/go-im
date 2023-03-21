@@ -1,4 +1,4 @@
-{{define "/chat/foot.shtml"}}
+{{define "/im/foot.shtml"}}
 <script>
 
     function upload(dom){
@@ -341,7 +341,7 @@
                     },
                     loadcommunitys:function(){
                         var that = this;
-                        post("contact/loadcommunity",{userid:userId()},function(res){
+                        post("/contact/loadcommunity",{userid:userId()},function(res){
                             that.communitys = res.rows ||[];
                         })
                     },

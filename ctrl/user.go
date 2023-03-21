@@ -1,49 +1,48 @@
 package ctrl
 
 import (
-	"net/http"
 	"fmt"
 	"math/rand"
 	"../util"
 	"../service"
 	"../model"
+	"../web"
 )
 
 var userService service.UserService
 
 
 //登录api
-func UserLogin(writer http.ResponseWriter,
-	request *http.Request) {
-	request.ParseForm()
-	mobile := request.PostForm.Get("mobile")
-	passwd := request.PostForm.Get("passwd")
+func UserLogin(c *web.Context) {
+	c.R.ParseForm()
+
+	mobile := c.R.PostForm.Get("mobile")
+	passwd := c.R.PostForm.Get("passwd")
     user,err := userService.Login(mobile,passwd)
 
     if err!=nil{
-    	util.RespFail(writer,err.Error())
+    	util.RespFail(c.W,err.Error())
 	}else{
-		util.RespOk(writer,user,"")
+		util.RespOk(c.W,user,"")
 	}
 
 }
 
 //注册api
-func UserRegister(writer http.ResponseWriter,
-	request *http.Request) {
+func UserRegister(c *web.Context) {
 
-	request.ParseForm()
-	mobile := request.PostForm.Get("mobile")
-	plainpwd := request.PostForm.Get("passwd")
+	c.R.ParseForm()
+	mobile := c.R.PostForm.Get("mobile")
+	plainpwd := c.R.PostForm.Get("passwd")
 	nickname := fmt.Sprintf("user%06d",rand.Int31())
 	avatar := ""
 	sex := model.SEX_UNKNOW
 
 	user,err := userService.Register(mobile, plainpwd,nickname,avatar,sex)
 	if err!=nil{
-		util.RespFail(writer,err.Error())
+		util.RespFail(c.W,err.Error())
 	}else{
-		util.RespOk(writer,user,"")
+		util.RespOk(c.W,user,"")
 
 	}
 

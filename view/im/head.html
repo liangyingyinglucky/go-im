@@ -1,4 +1,4 @@
-{{define "/chat/head.shtml"}}
+{{define "/im/head.shtml"}}
 <script>
     function userId(id){
         if(typeof  id =="undefined"){
@@ -48,6 +48,7 @@
    function post(uri,data,fn){
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST","//"+location.host+"/"+uri, true);
+                console.log("//"+location.host+"/"+uri);
                 // 添加http头，发送信息至服务器时内容编码类型
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.onreadystatechange = function() {

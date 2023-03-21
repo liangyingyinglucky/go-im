@@ -9,6 +9,7 @@ import (
 	"time"
 	"math/rand"
 	"io"
+	"../web"
 	//"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
 
@@ -23,8 +24,8 @@ Bucket="test"
 func init(){
 	os.MkdirAll("./mnt",os.ModePerm)
 }
-func Upload(w http.ResponseWriter, r *http.Request){
-	UploadLocal(w,r)
+func Upload(c *web.Context){
+	UploadLocal(c.W,c.R)
 }
 
 //1.存储位置 ./mnt,需要确保已经创建好

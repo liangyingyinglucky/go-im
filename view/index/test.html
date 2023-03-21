@@ -1,4 +1,4 @@
-{{define  "/user/register.shtml"}}
+{{define  "/index/test.shtml"}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,18 +55,13 @@
 
                 //网络请求
                 //封装了promis
-                util.post("user/register",this.user).then(res=>{
+                util.post("user/login",this.user).then(res=>{
                     console.log(res)
                     if(res.code!=0){
                         mui.toast(res.msg)
                     }else{
                         //location.replace("//127.0.0.1/demo/index.shtml")
-                        //mui.toast("登录成功,即将跳转")
-                        var url = "/chat/index.shtml?id="+res.data.id
-                                +"&token="+res.data.token
-                        userInfo(res.data)
-                        userId(res.data.id)
-                        location.href= url
+                        mui.toast("登录成功,即将跳转")
                     }
                 })
             },

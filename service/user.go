@@ -21,7 +21,7 @@ func (s *UserService)Register(
 	nickname,//昵称
 	avatar,sex string)(user model.User,err error) {
 
-	//检测手机号码是否存在,
+	//检测手机号码是否存在
 	tmp := model.User{}
 	_,err=DbEngin.Where("mobile=? ",mobile).Get(&tmp)
 	if err!=nil{
@@ -31,7 +31,6 @@ func (s *UserService)Register(
     if tmp.Id>0{
     	return tmp,errors.New("该手机号已经注册")
 	}
-	//否则拼接插入数据
 	tmp.Mobile = mobile
 	tmp.Avatar = avatar
 	tmp.Nickname = nickname
@@ -41,14 +40,7 @@ func (s *UserService)Register(
 	tmp.Createat = time.Now()
 	//token 可以是一个随机数
 	tmp.Token = fmt.Sprintf("%08d",rand.Int31())
-	//passwd =
-	//md5 加密
-	//返回新用户信息
-
-	//插入 InserOne
 	_,err = DbEngin.InsertOne(&tmp)
-	//前端恶意插入特殊字符
-	//数据库连接操作失败
 	return tmp,err
 }
 
@@ -58,9 +50,7 @@ func (s *UserService)Login(
 	plainpwd string )(user model.User,err error) {
 
     //首先通过手机号查询用户
-    tmp :=model.User{
-
-	}
+    tmp :=model.User{}
 	DbEngin.Where("mobile = ?",mobile).Get(&tmp)
     //如果没有找到
     if tmp.Id==0{

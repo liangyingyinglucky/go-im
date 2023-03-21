@@ -9,6 +9,7 @@ import (
 )
 
 var DbEngin *xorm.Engine
+
 func  init()  {
 	drivename :="mysql"
 	DsName := "root:Lyy@@@123@(127.0.0.1:3306)/test?charset=utf8"

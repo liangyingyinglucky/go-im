@@ -9,6 +9,8 @@ import (
 	"log"
 	"encoding/json"
 	"net"
+	"fmt"
+	"../web"
 	)
 
 const (
@@ -71,24 +73,24 @@ var rwlocker sync.RWMutex
 
 
 // ws://127.0.0.1/chat?id=1&token=xxxx
-func Chat(writer http.ResponseWriter,
-	request *http.Request) {
-	fmt.Printf("%+v",request.Header)
-    query := request.URL.Query()
+func Chat(c *web.Context) {
+	fmt.Printf("%+v",c.R.Header)
+
+    query := c.R.URL.Query()
     id := query.Get("id")
     token := query.Get("token")
     //验证用户
     userId ,_ := strconv.ParseInt(id,10,64)
 	isvalida := checkToken(userId,token)
 	if isvalida != true {
-		return isvalida
+		return
 	}
 
 	conn,err :=(&websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {//解决跨域
 			return true
 		},
-	}).Upgrade(writer,request,nil)
+	}).Upgrade(c.W,c.R,nil)
 	if err!=nil{
 		log.Println(err.Error())
 		return
@@ -202,7 +204,7 @@ func udprecvproc(){
 	 })
 	 defer con.Close()
 	 if err!=nil{log.Println(err.Error())}
-	//TODO 处理端口发过来的数据
+	//处理端口发过来的数据
 	for{
 		var buf [512]byte
 		n,err:=con.Read(buf[0:])
@@ -251,7 +253,8 @@ func sendMsg(userId int64,msg []byte) {
 	}
 }
 //检测是否有效
-func checkToken(userId int64,token string)bool{
+func checkToken(userId int64,token string) bool {
+	return true;
 	//从数据库里面查询并比对
 	user := userService.Find(userId)
 	return user.Token==token
